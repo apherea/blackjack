@@ -2,7 +2,6 @@ import java.util.Scanner;
 
 /**
  * @Jacob-Cho
- * @since 12-8-2021
  */
 
 public class Blackjack{
@@ -31,7 +30,8 @@ public class Blackjack{
         Card dealerCard = new Card();
 
         //Prints a welcome statement
-        System.out.println("Welcome to Blackjack");
+        System.out.println("Welcome, enjoy your stay.");
+        System.out.println("Here are the House Rules: \n - Number Cards: Face value\n - Royals: 10 value\n - Ace: 11 value always");
         Scanner scan = new Scanner(System.in);
 
         while(isPlaying == true){
@@ -45,8 +45,7 @@ public class Blackjack{
                 dealerHand[i] = null; 
             }
 
-            System.out.println("");
-            System.out.println("Dealing cards...");
+            System.out.println("\nDealing cards...");
             blackJack.shuffle();
 
             //Deals the first two cards of the play for both dealer and the player
@@ -55,72 +54,76 @@ public class Blackjack{
                 dealerCard = blackJack.deal();
 
                 userHand[i] = userCard;
-                userActiveHand += (" " + userHand[i]);
+                userActiveHand += (userHand[i]);
 
                 dealerHand[i] = dealerCard;
-                dealerActiveHand += (" " + dealerHand[i]);
+                dealerActiveHand += (dealerHand[i]);
+                if(i == 0){
+                    userActiveHand += " | ";
+                    dealerActiveHand += " | ";
+                }
             }
-            System.out.println("Your Hand:" + userActiveHand);
-            System.out.println("Dealer's Hand:" + dealerActiveHand);
+            System.out.println("\nYour Hand: " + userActiveHand);
+            System.out.println("Dealer's Hand: " + dealerActiveHand);
 
-            //If either the player or the dealer busts immediately, this if statement will go through
+            //If either the player or the dealer gets blackjack or busts immediately, this if statement will go through
             if(isBlackjack(userHand) == true || isBlackjack(dealerHand) == true || isBust(userHand) == true || isBust(dealerHand) == true){
                 System.out.println(determineResult(userHand, dealerHand));
             }
 
             //Asks the user if they want to hit or stay
-            System.out.println("Would you like to (H)it or (S)tay: ");
+            System.out.println("\nWould you like to (H)it or (S)tay: ");
             choice = scan.nextLine();
 
             //The if statements for if the user decides to hit or stay
-            if(choice.toUpperCase().equals("HIT")){
+            if(choice.toUpperCase().equals("HIT") || choice.toUpperCase().equals("H")){
                 int userIndex = 2;
                 userCard = blackJack.deal();
                 userHand[userIndex] = userCard;
 
                 //If the user busts immediately after drawing, then this will execute
                 if(isBust(userHand) == true || isBlackjack(userHand) == true){
-                    System.out.println("Your Hand: " + userHand[0] + " " + userHand[1] + " " + userHand[2]);
+                    System.out.println("\nYour Hand: " + userHand[0] + " | " + userHand[1] + " | " + userHand[2]);
                     System.out.println(determineResult(userHand, dealerHand));
                 } else{
-                    userActiveHand += (" " + userHand[userIndex]);
+                    userActiveHand += (" | " + userHand[userIndex]);
 
                     int dealerIndex = 2; 
                     while(dealerKeepHitting(dealerHand) == true){
                         System.out.println("");
-                        System.out.println("Your Hand:" + userActiveHand);
+                        System.out.println("\nYour Hand: " + userActiveHand);
 
                         dealerCard = blackJack.deal();
                         dealerHand[dealerIndex] = dealerCard;
-                        dealerActiveHand += (" " + dealerHand[dealerIndex]);
+                        dealerActiveHand += (" | " + dealerHand[dealerIndex]);
                         dealerIndex++;
 
                         System.out.println("Dealer's Hand: " + dealerActiveHand);
                     }
 
                     System.out.println("");
-                    System.out.println("Your Hand:" + userActiveHand);
+                    System.out.println("\nYour Hand: " + userActiveHand);
                     System.out.println("Dealer's Hand: " + dealerActiveHand);
                     System.out.println(determineResult(userHand, dealerHand));
                 }
             //if statement for the stay results
-            } else if(choice.toUpperCase().equals("STAY")){
+            } else if(choice.toUpperCase().equals("STAY") || choice.toUpperCase().equals("S")){
                 int dealerIndex = 2; 
 
                 while(dealerKeepHitting(dealerHand) == true){
                     System.out.println("");
-                    System.out.println("Your Hand:" + userActiveHand);
+                    System.out.println("\nYour Hand: " + userActiveHand);
 
                     dealerCard = blackJack.deal();
                     dealerHand[dealerIndex] = dealerCard;
-                    dealerActiveHand += (" " + dealerHand[dealerIndex]);
+                    dealerActiveHand += (" | " + dealerHand[dealerIndex]);
                     dealerIndex++;
 
                     System.out.println("Dealer's Hand: " + dealerActiveHand);
                 }
 
                 System.out.println("");
-                System.out.println("Your Hand:" + userActiveHand);
+                System.out.println("\nYour Hand: " + userActiveHand);
                 System.out.println("Dealer's Hand: " + dealerActiveHand);
                 System.out.println(determineResult(userHand, dealerHand));
             } else{
@@ -132,7 +135,7 @@ public class Blackjack{
             }
 
             //Would you like to play again loop that makes them enter a valid input
-            System.out.println("Would you like to play again? (Y)es/(N)o: ");
+            System.out.println("\nWould you like to play again? (Y)es/(N)o: ");
             choice = scan.nextLine();
 
             if(choice.toUpperCase().equals("YES")){

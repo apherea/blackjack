@@ -3,4 +3,4 @@ class Main {
       Blackjack blackjack = new Blackjack();
       blackjack.play();
     }
-  }
+}
